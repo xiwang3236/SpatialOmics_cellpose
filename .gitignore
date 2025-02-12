@@ -176,3 +176,4 @@ cython_debug/
 # Folder
 data/
 results/
+models/
