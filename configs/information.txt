@@ -1,0 +1,17 @@
+1835od
+crop_size = 400
+
+1835os
+crop_size = 400/0.2125
+
+1792od
+crop_size = 600/0.2125
+
+1782od
+crop_size = 600/0.2125
+
+1782os
+crop_size = 600/0.2125
+
+best model
+HILT_1113
