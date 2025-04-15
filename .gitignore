@@ -175,5 +175,6 @@ cython_debug/
 
 # Folder
 data/
+data5k/
 results/
 models/
