@@ -1,0 +1,74 @@
+Processing square 1: POLYGON ((3221.235294117647 3468, 3221.235294117647 4597.235294117647, 2092 4597.235294117647, 2092 3468, 3221.235294117647 3468))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_1.tif
+Processing square 2: POLYGON ((3221.235294117647 4409, 3221.235294117647 5538.235294117647, 2092 5538.235294117647, 2092 4409, 3221.235294117647 4409))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_2.tif
+Processing square 3: POLYGON ((3221.235294117647 5350, 3221.235294117647 6479.235294117647, 2092 6479.235294117647, 2092 5350, 3221.235294117647 5350))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_3.tif
+Processing square 4: POLYGON ((3221.235294117647 6291, 3221.235294117647 7420.235294117647, 2092 7420.235294117647, 2092 6291, 3221.235294117647 6291))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_4.tif
+Processing square 5: POLYGON ((4162.235294117647 2527, 4162.235294117647 3656.235294117647, 3033 3656.235294117647, 3033 2527, 4162.235294117647 2527))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_5.tif
+Processing square 6: POLYGON ((4162.235294117647 3468, 4162.235294117647 4597.235294117647, 3033 4597.235294117647, 3033 3468, 4162.235294117647 3468))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_6.tif
+Processing square 7: POLYGON ((4162.235294117647 4409, 4162.235294117647 5538.235294117647, 3033 5538.235294117647, 3033 4409, 4162.235294117647 4409))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_7.tif
+Processing square 8: POLYGON ((5103.235294117647 645, 5103.235294117647 1774.235294117647, 3974 1774.235294117647, 3974 645, 5103.235294117647 645))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_8.tif
+Processing square 9: POLYGON ((5103.235294117647 1586, 5103.235294117647 2715.235294117647, 3974 2715.235294117647, 3974 1586, 5103.235294117647 1586))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_9.tif
+Processing square 10: POLYGON ((5103.235294117647 2527, 5103.235294117647 3656.235294117647, 3974 3656.235294117647, 3974 2527, 5103.235294117647 2527))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_10.tif
+Processing square 11: POLYGON ((5103.235294117647 3468, 5103.235294117647 4597.235294117647, 3974 4597.235294117647, 3974 3468, 5103.235294117647 3468))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_11.tif
+Processing square 12: POLYGON ((6044.235294117647 645, 6044.235294117647 1774.235294117647, 4915 1774.235294117647, 4915 645, 6044.235294117647 645))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_12.tif
+Processing square 13: POLYGON ((6044.235294117647 1586, 6044.235294117647 2715.235294117647, 4915 2715.235294117647, 4915 1586, 6044.235294117647 1586))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_13.tif
+Processing square 14: POLYGON ((6044.235294117647 2527, 6044.235294117647 3656.235294117647, 4915 3656.235294117647, 4915 2527, 6044.235294117647 2527))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_14.tif
+Processing square 15: POLYGON ((6985.235294117647 645, 6985.235294117647 1774.235294117647, 5856 1774.235294117647, 5856 645, 6985.235294117647 645))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_15.tif
+Processing square 16: POLYGON ((6985.235294117647 1586, 6985.235294117647 2715.235294117647, 5856 2715.235294117647, 5856 1586, 6985.235294117647 1586))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_16.tif
+Processing square 17: POLYGON ((7926.235294117647 645, 7926.235294117647 1774.235294117647, 6797 1774.235294117647, 6797 645, 7926.235294117647 645))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_17.tif
+Processing square 18: POLYGON ((7926.235294117647 1586, 7926.235294117647 2715.235294117647, 6797 2715.235294117647, 6797 1586, 7926.235294117647 1586))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_18.tif
+Processing square 19: POLYGON ((8867.235294117647 645, 8867.235294117647 1774.235294117647, 7738 1774.235294117647, 7738 645, 8867.235294117647 645))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_19.tif
+Processing square 20: POLYGON ((9808.235294117647 645, 9808.235294117647 1774.235294117647, 8679 1774.235294117647, 8679 645, 9808.235294117647 645))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_20.tif
+Processing square 21: POLYGON ((10749.235294117647 645, 10749.235294117647 1774.235294117647, 9620 1774.235294117647, 9620 645, 10749.235294117647 645))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_21.tif
+Processing square 22: POLYGON ((10749.235294117647 1586, 10749.235294117647 2715.235294117647, 9620 2715.235294117647, 9620 1586, 10749.235294117647 1586))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_22.tif
+Processing square 23: POLYGON ((11690.235294117647 645, 11690.235294117647 1774.235294117647, 10561 1774.235294117647, 10561 645, 11690.235294117647 645))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_23.tif
+Processing square 24: POLYGON ((11690.235294117647 1586, 11690.235294117647 2715.235294117647, 10561 2715.235294117647, 10561 1586, 11690.235294117647 1586))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_24.tif
+Processing square 25: POLYGON ((12631.235294117647 1586, 12631.235294117647 2715.235294117647, 11502 2715.235294117647, 11502 1586, 12631.235294117647 1586))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_25.tif
+Processing square 26: POLYGON ((12631.235294117647 2527, 12631.235294117647 3656.235294117647, 11502 3656.235294117647, 11502 2527, 12631.235294117647 2527))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_26.tif
+Processing square 27: POLYGON ((13572.235294117647 1586, 13572.235294117647 2715.235294117647, 12443 2715.235294117647, 12443 1586, 13572.235294117647 1586))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_27.tif
+Processing square 28: POLYGON ((13572.235294117647 2527, 13572.235294117647 3656.235294117647, 12443 3656.235294117647, 12443 2527, 13572.235294117647 2527))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_28.tif
+Processing square 29: POLYGON ((13572.235294117647 3468, 13572.235294117647 4597.235294117647, 12443 4597.235294117647, 12443 3468, 13572.235294117647 3468))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_29.tif
+Processing square 30: POLYGON ((13572.235294117647 4409, 13572.235294117647 5538.235294117647, 12443 5538.235294117647, 12443 4409, 13572.235294117647 4409))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_30.tif
+Processing square 31: POLYGON ((14513.235294117647 2527, 14513.235294117647 3656.235294117647, 13384 3656.235294117647, 13384 2527, 14513.235294117647 2527))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_31.tif
+Processing square 32: POLYGON ((14513.235294117647 3468, 14513.235294117647 4597.235294117647, 13384 4597.235294117647, 13384 3468, 14513.235294117647 3468))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_32.tif
+Processing square 33: POLYGON ((14513.235294117647 4409, 14513.235294117647 5538.235294117647, 13384 5538.235294117647, 13384 4409, 14513.235294117647 4409))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_33.tif
+Processing square 34: POLYGON ((14513.235294117647 5350, 14513.235294117647 6479.235294117647, 13384 6479.235294117647, 13384 5350, 14513.235294117647 5350))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_34.tif
+Processing square 35: POLYGON ((14513.235294117647 6291, 14513.235294117647 7420.235294117647, 13384 7420.235294117647, 13384 6291, 14513.235294117647 6291))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_35.tif
+Processing square 36: POLYGON ((15454.235294117647 5350, 15454.235294117647 6479.235294117647, 14325 6479.235294117647, 14325 5350, 15454.235294117647 5350))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_36.tif
+Processing square 37: POLYGON ((15454.235294117647 6291, 15454.235294117647 7420.235294117647, 14325 7420.235294117647, 14325 6291, 15454.235294117647 6291))
+Cropped image saved to G:\Alexis_data\Project\SpatialOmics_cellpose\results/cropped_image/1886od/cropped_square_com_37.tif
