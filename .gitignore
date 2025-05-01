@@ -173,6 +173,11 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+# files
+*.tif
+*.png
+*.csv
+
 # Folder
 data/
 data5k/
