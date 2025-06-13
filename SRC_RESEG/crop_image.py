@@ -116,3 +116,23 @@ def plot_polygon_and_squares(
     ax.set_aspect('equal', 'box')
     ax.legend(loc="upper left")
     plt.show()
+    
+# Define a function to crop the image based on a shapely Polygon
+def crop_region(image, poly):
+    """
+    Crops the rectangular bounding box of a polygon from an image.
+
+    Parameters:
+        image (ndarray): The original image to crop.
+        poly (Polygon): A shapely Polygon object defining the region.
+
+    Returns:
+        ndarray: The cropped image region.
+    """
+    # Get the bounding box of the polygon
+    min_x, min_y, max_x, max_y = map(int, poly.bounds)
+    
+    # Crop the image using the bounding box
+    cropped_image = image[min_y:max_y, min_x:max_x]
+    
+    return cropped_image
