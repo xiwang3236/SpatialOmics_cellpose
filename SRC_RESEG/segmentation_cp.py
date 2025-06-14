@@ -52,7 +52,7 @@ def denoise_and_segment_image(img, img_name, output_path,  cellpose_model):
     centroids_path = output_path + '_centroids.csv'
 
     props_df.to_csv(centroids_path, index=False)
-    print(f"Properties saved to: {centroids_path}")
+    # print(f"Properties saved to: {centroids_path}")
 
     # Save the masks as TIFF files
     io.save_masks(

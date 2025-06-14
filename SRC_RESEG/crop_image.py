@@ -4,6 +4,7 @@ import tifffile
 from shapely.geometry import Polygon, box
 import numpy as np
 import cv2
+import os
 
 def plot_roi(filepath):
     # Read coordinates and create plot
@@ -55,6 +56,37 @@ def mask_polygon_from_tif(
     return mask, masked
 
 
+def plot_polygon_and_squares(
+    polygon, 
+    squares, 
+    title="Non-Overlapping Squares Enclosing Region",
+    polygon_label="Polygon",
+    square_label="Square",
+    square_edge="red",
+    square_alpha=0.3
+):
+
+    fig, ax = plt.subplots()
+    # plot the polygon outline
+    x, y = polygon.exterior.xy
+    ax.plot(x, y, 'k-', label=polygon_label)
+
+    # fill squares (only label the first for legend)
+    for i, sq in enumerate(squares):
+        sx, sy = sq.exterior.xy
+        
+        ax.fill(sx, sy,
+                edgecolor=square_edge,
+                alpha=square_alpha,
+                label=square_label if i == 0 else None)
+        cx, cy = sq.centroid.x, sq.centroid.y
+        ax.text(cx, cy, str(i), ha='center', va='center')
+        
+    ax.set_title(title)
+    ax.set_aspect('equal', 'box')
+    ax.legend(loc="upper left")
+    plt.show()
+    
 def crop_polygon_to_overlapping_squares(polygon, square_size, overlap_size=40/0.2125):
     """
     Crops a polygon into overlapping square regions of a given size.
@@ -89,33 +121,50 @@ def crop_polygon_to_overlapping_squares(polygon, square_size, overlap_size=40/0.
     
     return squares
 
-def plot_polygon_and_squares(
-    polygon, 
-    squares, 
-    title="Non-Overlapping Squares Enclosing Region",
-    polygon_label="Polygon",
-    square_label="Square",
-    square_edge="red",
-    square_alpha=0.3
-):
+def crop_polygon_to_squares(polygon, square_size, overlap_size=40/0.2125, with_overlap=True):
+    """
+    Crops a polygon into square regions of a given size, with or without overlap.
 
-    fig, ax = plt.subplots()
-    # plot the polygon outline
-    x, y = polygon.exterior.xy
-    ax.plot(x, y, 'k-', label=polygon_label)
+    Args:
+        polygon (Polygon): The input polygon to crop.
+        square_size (float): The base size of each square region (side length).
+        overlap_size (float): The amount of overlap in um (default: 40).
+        with_overlap (bool): Whether to include overlap between squares (default: True).
 
-    # fill squares (only label the first for legend)
-    for i, sq in enumerate(squares):
-        sx, sy = sq.exterior.xy
-        ax.fill(sx, sy,
-                edgecolor=square_edge,
-                alpha=square_alpha,
-                label=square_label if i == 0 else None)
+    Returns:
+        List[Polygon]: List of square polygons that intersect with the input polygon.
+    """
+    # Get bounding box of the polygon
+    minx, miny, maxx, maxy = polygon.bounds
+    squares = []
 
-    ax.set_title(title)
-    ax.set_aspect('equal', 'box')
-    ax.legend(loc="upper left")
-    plt.show()
+    if with_overlap:
+        # Generate grid of overlapping squares
+        for x in range(int(minx), int(maxx), square_size):
+            for y in range(int(miny), int(maxy), square_size):
+                square = box(
+                    x,                               # minx (unchanged)
+                    y,                               # miny (unchanged)
+                    x + square_size + overlap_size,  # maxx (expanded)
+                    y + square_size + overlap_size   # maxy (expanded)
+                )
+                if polygon.intersects(square):
+                    squares.append(square)
+    else:
+        # Generate grid of non-overlapping squares
+        for x in range(int(minx), int(maxx), square_size):
+            for y in range(int(miny), int(maxy), square_size):
+                square = box(
+                    x,                    # minx
+                    y,                    # miny
+                    x + square_size,      # maxx (no overlap)
+                    y + square_size       # maxy (no overlap)
+                )
+                if polygon.intersects(square):
+                    squares.append(square)
+
+    return squares
+
     
 # Define a function to crop the image based on a shapely Polygon
 def crop_region(image, poly):
