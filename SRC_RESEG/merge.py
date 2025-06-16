@@ -355,6 +355,40 @@ def reduce_points(df):
     
     return new_df.reset_index(drop=True)
 
+
+def plot_cell_outlines_comparison(df_orig, df_reduced, n=30, rows=5, cols=6):
+    # find cell IDs present in both dataframes
+    common_ids = np.intersect1d(df_orig['cell_id'].unique(),
+                                df_reduced['cell_id'].unique())
+    # sample up to n cells
+    ids = np.random.choice(common_ids, min(n, len(common_ids)), replace=False)
+
+    fig, axes = plt.subplots(rows, cols, figsize=(cols * 3, rows * 3))
+    axes = axes.flatten()
+    for ax, cell_id in zip(axes, ids):
+        orig = df_orig[df_orig['cell_id'] == cell_id]
+        red  = df_reduced[df_reduced['cell_id'] == cell_id]
+
+        # original outline
+        ax.plot(orig['vertex_x'], orig['vertex_y'],
+                linewidth=2, label='Original', alpha=0.6)
+        # reduced outline
+        ax.plot(red['vertex_x'],  red['vertex_y'],
+                linewidth=2, linestyle='--', label='Reduced', alpha=0.6)
+
+        ax.set_title(f'Cell {cell_id}', fontsize=8)
+        ax.invert_yaxis()
+        ax.axis('off')
+        ax.legend(loc='lower right', fontsize=6)
+
+    # turn off any extra axes
+    for ax in axes[len(ids):]:
+        ax.axis('off')
+
+    plt.tight_layout()
+    plt.show()
+
+
 def calculate_centroids(df):
     # Group the DataFrame by 'cell_id'
     grouped = df.groupby('cell_id')

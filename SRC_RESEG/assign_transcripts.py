@@ -2,33 +2,47 @@ import pandas as pd
 from shapely.geometry import Point, Polygon
 from rtree import index
 
-# Filter transcripts to retain only those within the polygon
-def is_inside_polygon(row):
-    global processed_count
-    point = Point(row["x_location"], row["y_location"])
-    processed_count += 1
-    if processed_count % 10000 == 0:  # Print every 100 rows processed
-        print(f"Processed {processed_count} transcripts...")
-    return polygon.contains(point)
+spatial_index = index.Index()
+cell_polygons = {}
 
-# Optimized function to find the cell_id for a given x, y location
-def find_cell_id_optimized(x, y):
+def is_inside_polygon(row, polygon):
+    """
+    Returns True if the transcript at (x_location, y_location)
+    lies inside the given polygon. Also prints progress every 10k rows.
+    """
     global processed_count
-    point = Point(x, y)
-    possible_matches = list(spatial_index.intersection((x, y, x, y)))
-    for cell_id in possible_matches:
-        if cell_polygons[cell_id].contains(point):
-            return cell_id
+    processed_count += 1
+    if processed_count % 100000 == 0:
+        print(f"  iltered {processed_count} rows…")
+    pt = Point(row["x_location"], row["y_location"])
+    return polygon.contains(pt)
+
+def find_cell_id_optimized(x, y, spatial_index, cell_polygons):
+    """
+    Given an (x,y) point, uses the R-tree index to find
+    which cell polygon contains it. Returns “UNASSIGNED” if none.
+    """
+    pt = Point(x, y)
+    for cid in spatial_index.intersection((x, y, x, y)):
+        if cell_polygons[cid].contains(pt):
+            return cid
     return "UNASSIGNED"
 
-# Modified function to handle progress tracking with R-Tree
-def process_with_progress(transcripts_df):
+def assign_cell_ids_with_progress(df, spatial_index, cell_polygons):
+    """
+    Iterates through df, uses find_cell_id_optimized(), and
+    prints progress every 10k rows. Returns a list of cell_ids.
+    """
     global processed_count
-    results = []
-    for index, row in transcripts_df.iterrows():
-        cell_id = find_cell_id_optimized(row["x_location"], row["y_location"])
-        results.append(cell_id)
+    processed_count = 0
+    cell_ids = []
+    for _, row in df.iterrows():
+        cid = find_cell_id_optimized(
+            row["x_location"], row["y_location"],
+            spatial_index, cell_polygons
+        )
+        cell_ids.append(cid)
         processed_count += 1
-        if processed_count % 10000 == 0:  # Print every 1000 rows processed
-            print(f"Processed {processed_count} transcripts...")
-    return results
+        if processed_count % 10000 == 0:
+            print(f"  → Assigned {processed_count} rows…")
+    return cell_ids
