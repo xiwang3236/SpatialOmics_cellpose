@@ -184,3 +184,5 @@ data5k/
 data5k_r2/
 results/
 models/
+data_DRG/
+cropped_images/
