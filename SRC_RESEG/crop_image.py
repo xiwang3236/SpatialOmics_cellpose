@@ -23,6 +23,7 @@ def plot_roi(filepath):
     plt.show()
 
 
+
 def mask_polygon_from_tif(
     fullres_path: str,
     x_coords: np.ndarray,
@@ -55,6 +56,38 @@ def mask_polygon_from_tif(
 
     return mask, masked
 
+
+def plot_polygon_and_squares_continuous(
+    polygon, 
+    squares, 
+    start_number,  # Starting number for squares
+    title="Non-Overlapping Squares Enclosing Region",
+    polygon_label="Polygon",
+    square_label="Square",
+    square_edge="red",
+    square_alpha=0.3
+):
+    
+    fig, ax = plt.subplots()
+    # plot the polygon outline
+    x, y = polygon.exterior.xy
+    ax.plot(x, y, 'k-', label=polygon_label)
+
+    # fill squares with continuous numbering
+    for i, sq in enumerate(squares):
+        sx, sy = sq.exterior.xy
+        
+        ax.fill(sx, sy,
+                edgecolor=square_edge,
+                alpha=square_alpha,
+                label=square_label if i == 0 else None)
+        cx, cy = sq.centroid.x, sq.centroid.y
+        ax.text(cx, cy, str(start_number + i), ha='center', va='center')  # Continuous numbering
+        
+    ax.set_title(title)
+    ax.set_aspect('equal', 'box')
+    ax.legend(loc="upper left")
+    plt.show()
 
 def plot_polygon_and_squares(
     polygon, 
