@@ -157,6 +157,7 @@ def crop_polygon_to_overlapping_squares(polygon, square_size, overlap_size=40/0.
 def crop_polygon_to_squares(polygon, square_size, overlap_size=40/0.2125, with_overlap=True):
     """
     Crops a polygon into square regions of a given size, with or without overlap.
+    Ensures no negative coordinates are generated.
 
     Args:
         polygon (Polygon): The input polygon to crop.
@@ -169,12 +170,17 @@ def crop_polygon_to_squares(polygon, square_size, overlap_size=40/0.2125, with_o
     """
     # Get bounding box of the polygon
     minx, miny, maxx, maxy = polygon.bounds
+    
+    # Ensure starting points are not negative
+    start_x = max(0, int(minx))
+    start_y = max(0, int(miny))
+    
     squares = []
 
     if with_overlap:
         # Generate grid of overlapping squares
-        for x in range(int(minx), int(maxx), square_size):
-            for y in range(int(miny), int(maxy), square_size):
+        for x in range(start_x, int(maxx), square_size):
+            for y in range(start_y, int(maxy), square_size):
                 square = box(
                     x,                               # minx (unchanged)
                     y,                               # miny (unchanged)
@@ -185,8 +191,8 @@ def crop_polygon_to_squares(polygon, square_size, overlap_size=40/0.2125, with_o
                     squares.append(square)
     else:
         # Generate grid of non-overlapping squares
-        for x in range(int(minx), int(maxx), square_size):
-            for y in range(int(miny), int(maxy), square_size):
+        for x in range(start_x, int(maxx), square_size):
+            for y in range(start_y, int(maxy), square_size):
                 square = box(
                     x,                    # minx
                     y,                    # miny
@@ -203,6 +209,7 @@ def crop_polygon_to_squares(polygon, square_size, overlap_size=40/0.2125, with_o
 def crop_region(image, poly):
     """
     Crops the rectangular bounding box of a polygon from an image.
+    Handles negative coordinates by clipping to image bounds.
 
     Parameters:
         image (ndarray): The original image to crop.
@@ -214,7 +221,13 @@ def crop_region(image, poly):
     # Get the bounding box of the polygon
     min_x, min_y, max_x, max_y = map(int, poly.bounds)
     
-    # Crop the image using the bounding box
+    # Clip to valid image bounds (ensure >= 0 and within image dimensions)
+    min_x = max(0, min_x)
+    min_y = max(0, min_y)
+    max_x = min(image.shape[1], max_x)
+    max_y = min(image.shape[0], max_y)
+    
+    # Crop the image using the clipped bounding box
     cropped_image = image[min_y:max_y, min_x:max_x]
     
     return cropped_image
