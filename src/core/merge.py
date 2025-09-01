@@ -295,6 +295,72 @@ def visualize_mapped_centroids_with_sections(result_df, outside_df, non_overlapp
     plt.tight_layout()
     plt.show()
 
+
+def visualize_mapped_centroids_with_sections(result_df, outside_df, non_overlapping_squares, all_sections, pixelsize, figsize=(15, 15)):
+    """
+    Visualizes the mapped centroids, squares, and section polygons.
+    """
+    fig, ax = plt.subplots(figsize=figsize)
+    
+    # Plot section polygons first (with alpha)
+    colors = ['blue', 'red', 'green', 'orange', 'purple', 'brown', 'pink', 'gray']
+    
+    for i, section in enumerate(all_sections):
+        # Rescale section coordinates
+        x_coords_rescaled = section['x_coords'] / pixelsize
+        y_coords_rescaled = section['y_coords'] / pixelsize
+        
+        color = colors[i % len(colors)]
+        
+        # Plot section boundary
+        ax.plot(x_coords_rescaled, y_coords_rescaled, 
+                color=color, linewidth=2, alpha=0.5,
+                label=f"{section['name']}")
+        
+        # Fill section area with alpha
+        ax.fill(x_coords_rescaled, y_coords_rescaled, 
+                color=color, alpha=0.1)
+        
+        # Close the polygon line
+        if len(x_coords_rescaled) > 2:
+            ax.plot([x_coords_rescaled[0], x_coords_rescaled[-1]], 
+                    [y_coords_rescaled[0], y_coords_rescaled[-1]], 
+                    color=color, linewidth=2, alpha=0.5)
+    
+    # Plot non-overlapping squares
+    for idx, square in enumerate(non_overlapping_squares):
+        x, y = square.exterior.xy
+        ax.plot(x, y, 'k-', linewidth=1, alpha=0.5)
+        # Add region number label
+        centroid = square.centroid
+        ax.text(centroid.x, centroid.y, str(idx + 1), 
+                horizontalalignment='center', 
+                verticalalignment='center',
+                fontsize=8,
+                bbox=dict(facecolor='white', alpha=0.7, edgecolor='none'))
+    
+    # Plot mapped centroids
+    if not result_df.empty:
+        scatter = ax.scatter(result_df['centroid_x'], result_df['centroid_y'], 
+                           c=result_df['mapped_region'], 
+                           cmap='tab20', 
+                           alpha=0.6, 
+                           s=20,
+                           label='Mapped points')
+        # Make colorbar smaller and horizontal under the plot
+        cbar = plt.colorbar(scatter, label='Mapped Region', 
+                           orientation='horizontal', 
+                           shrink=0.6, 
+                           aspect=30,
+                           pad=0.1)
+    
+    ax.set_title('Mapped Centroids with Section Boundaries and Regions')
+    # Make the legend font smaller by setting fontsize
+    ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=8)
+    ax.set_aspect('equal')
+    plt.tight_layout()
+    plt.show()
+    
 def map_and_filter_outlines(input_dir, overlapping_squares, cell_mapping):
     """
     Load, filter, and map outlines based on the cell mapping from centroids.
