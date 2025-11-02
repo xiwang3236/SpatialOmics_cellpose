@@ -537,11 +537,11 @@ def calculate_centroids(df):
 def rescale_coordinates(df, scale_factor=0.2125):
     """
     Rescale vertex coordinates by multiplying with scale factor.
-    
+
     Args:
         df: DataFrame with vertex_x and vertex_y columns
         scale_factor: Scaling factor (default: 0.2125)
-    
+
     Returns:
         DataFrame with rescaled coordinates
     """
@@ -549,3 +549,166 @@ def rescale_coordinates(df, scale_factor=0.2125):
     df_scaled['vertex_x'] = df['vertex_x'] * scale_factor
     df_scaled['vertex_y'] = df['vertex_y'] * scale_factor
     return df_scaled
+
+
+def find_duplicate_cells(centroids_dict, overlapping_squares, iou_threshold=0.3, distance_threshold=50):
+    """
+    Find duplicate cells across overlapping patches using centroid proximity and IoU.
+
+    Args:
+        centroids_dict: Dictionary mapping region -> centroid DataFrame (with offset applied)
+        overlapping_squares: List of overlapping square polygons
+        iou_threshold: Minimum IoU to consider cells as duplicates (default: 0.3)
+        distance_threshold: Maximum centroid distance in pixels to check for duplicates (default: 50)
+
+    Returns:
+        duplicate_groups: List of lists, where each inner list contains tuples (region, cell_id)
+                         representing the same physical cell across patches
+    """
+    from scipy.spatial.distance import cdist
+
+    # Build a list of all centroids with their region and cell_id
+    all_centroids = []
+    for region, df in centroids_dict.items():
+        for idx, row in df.iterrows():
+            all_centroids.append({
+                'region': region,
+                'cell_id': idx + 1,
+                'x': row['centroid_x'],
+                'y': row['centroid_y']
+            })
+
+    # Convert to arrays for distance calculation
+    coords = np.array([[c['x'], c['y']] for c in all_centroids])
+
+    # Find pairs within distance threshold
+    duplicate_groups = []
+    processed = set()
+
+    for i, cell_i in enumerate(all_centroids):
+        if i in processed:
+            continue
+
+        # Calculate distances to all other cells
+        distances = cdist([coords[i]], coords)[0]
+
+        # Find candidates within distance threshold
+        candidates = []
+        for j, dist in enumerate(distances):
+            if i != j and dist < distance_threshold:
+                cell_j = all_centroids[j]
+                # Only consider cells from different regions
+                if cell_i['region'] != cell_j['region']:
+                    candidates.append(j)
+
+        # If we found potential duplicates, create a group
+        if candidates:
+            group = [(cell_i['region'], cell_i['cell_id'])]
+            processed.add(i)
+
+            for j in candidates:
+                if j not in processed:
+                    cell_j = all_centroids[j]
+                    group.append((cell_j['region'], cell_j['cell_id']))
+                    processed.add(j)
+
+            duplicate_groups.append(group)
+
+    print(f"\nFound {len(duplicate_groups)} groups of duplicate cells in overlap zones")
+    return duplicate_groups
+
+
+def merge_duplicate_cells(duplicate_groups, input_dir, overlapping_squares, centroids_dict):
+    """
+    Merge duplicate cell instances by selecting the best instance or combining masks.
+
+    Args:
+        duplicate_groups: List of duplicate cell groups from find_duplicate_cells()
+        input_dir: Directory containing segmentation .npy files
+        overlapping_squares: List of overlapping square polygons
+        centroids_dict: Dictionary mapping region -> centroid DataFrame
+
+    Returns:
+        merged_cells: Dictionary mapping (region, cell_id) -> best_representative (region, cell_id)
+                     for cells that should be merged
+    """
+    merged_cells = {}
+
+    for group in duplicate_groups:
+        # For each duplicate group, select the instance with largest area or most central position
+        best_cell = None
+        best_score = -1
+
+        for region, cell_id in group:
+            # Load the segmentation mask for this region
+            polygon = overlapping_squares[region - 1]
+            min_x, min_y, max_x, max_y = map(int, polygon.bounds)
+
+            seg_file = os.path.join(input_dir, f'cropped_square_com_{region}_seg.npy')
+            seg_data = np.load(seg_file, allow_pickle=True).item()
+            masks = seg_data['masks']
+
+            # Get the mask for this specific cell
+            cell_mask = (masks == cell_id)
+            cell_area = np.sum(cell_mask)
+
+            # Get centroid from centroids_dict
+            centroid_row = centroids_dict[region].iloc[cell_id - 1]
+            centroid_x = centroid_row['centroid_x']
+            centroid_y = centroid_row['centroid_y']
+
+            # Calculate distance from patch center (prefer cells more central to their patch)
+            patch_center_x = (min_x + max_x) / 2
+            patch_center_y = (min_y + max_y) / 2
+            dist_to_center = np.sqrt((centroid_x - patch_center_x)**2 + (centroid_y - patch_center_y)**2)
+
+            # Score: prefer larger area and more central position
+            # Normalize distance by patch size
+            patch_size = max_x - min_x
+            normalized_dist = dist_to_center / patch_size
+
+            # Higher score is better (larger area, more central)
+            score = cell_area * (1 - normalized_dist)
+
+            if score > best_score:
+                best_score = score
+                best_cell = (region, cell_id)
+
+        # Map all cells in the group to the best representative
+        for region, cell_id in group:
+            if (region, cell_id) != best_cell:
+                merged_cells[(region, cell_id)] = best_cell
+
+    print(f"Merged {len(merged_cells)} duplicate cell instances")
+    print(f"Keeping {len(duplicate_groups)} unique cells from overlap zones")
+
+    return merged_cells
+
+
+def apply_cell_merging_to_mapping(cell_mapping, merged_cells):
+    """
+    Update cell_mapping to remove merged duplicates and keep only best representatives.
+
+    Args:
+        cell_mapping: Original cell mapping from map_centroids_to_nonoverlapping()
+        merged_cells: Dictionary from merge_duplicate_cells()
+
+    Returns:
+        Updated cell_mapping with duplicates removed
+    """
+    updated_mapping = {}
+
+    for region, cells_dict in cell_mapping.items():
+        updated_mapping[region] = {}
+
+        for cell_id, mapped_region in cells_dict.items():
+            # Check if this cell is a duplicate that should be removed
+            if (region, cell_id) not in merged_cells:
+                # Keep this cell
+                updated_mapping[region][cell_id] = mapped_region
+            else:
+                # This cell is a duplicate - skip it
+                best_rep = merged_cells[(region, cell_id)]
+                print(f"Removing duplicate: Region {region} Cell {cell_id} (keeping Region {best_rep[0]} Cell {best_rep[1]})")
+
+    return updated_mapping
